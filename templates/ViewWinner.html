@@ -1,0 +1,60 @@
+{%extends 'auctionHead.html'%}
+
+{%block title %}View Winner{%endblock%}
+{%block style%}
+
+<link href="http://fonts.cdnfonts.com/css/bloody" rel="stylesheet">
+<link href="http://fonts.cdnfonts.com/css/assurant" rel="stylesheet">
+<link href="http://fonts.cdnfonts.com/css/forever-black" rel="stylesheet">
+                
+                
+                
+{%endblock%}
+{%block body%}
+
+<div class="container-fluid bg-gradient" style="background:linear-gradient(#73aafe,#acc7e1)">
+
+    <div class="row border border-4 fs-4 p-4" style="background: linear-gradient(#73faa7,#b6f5bc);">
+        <div class="col-sm-12 p-2">
+          <span>Product Name: </span> <span style="font-family: Georgia, 'Times New Roman', Times, serif; font-weight: 800;"> {{product.product_name}}</span>
+        </div>
+        <div class="col-sm-12 p-3">
+            <span style="padding: 1%; margin: 1%;">Product Image:</span>
+            <br>
+            <div style="border: #06973e; border-style: double;padding-left:2%; padding-top: 1%;padding-bottom: 1%;padding-right: 0;">
+                <img src="{{MEDIA_URL}}{{product.product_image_path}}"  alt="" srcset="" class="img-fluid">
+            </div>
+            
+        </div>
+
+        {% if flag %}
+        <div class="col-sm-12 p-2">
+            <span>Product Description: </span>  <span style="font-family:cursive;border-style: dotted; padding: 1%;border-color: tomato;">{{product.product_description}}</span>
+        </div>
+        
+        <div class="container-fluid col-sm-12 m-3" style="background: linear-gradient(#1178ee,#12baa4); text-align: center;padding: 10px;">
+            <span style="font-family: 'Assurant', sans-serif;text-align: center;color: white;font-size: 3rem;">Higest Bidder of this Product is : </span>
+            <span style="font-family: 'Bloody', sans-serif;padding: 10px;text-transform: uppercase;color:rgb(104, 3, 3);letter-spacing: 2px;font-size: 4rem;">{{max_bidder.first_name}} {{max_bidder.last_name}}</span>
+
+        </div>
+
+        <div class="container-fluid col-sm-12 p-5" style="background:radial-gradient(#213520,#53274e);">
+
+            <h1 style="color: rgb(247, 91, 143);font-family: 'Forever Black', sans-serif;font-weight: bold;letter-spacing: 5px;">The Higest Bidding Amount is:</h1>
+            <h1 style="color:#fff;margin: 5%;font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;">Rs {{Max_Amount}}</h1>
+        </div>
+
+        {%else%}
+        <div class="container-fluid col-sm-12 p-5" style="background:radial-gradient(#213520,#53274e);">
+
+            <h1 style="color: rgb(247, 91, 143);font-family: 'Forever Black', sans-serif;font-weight: bold;letter-spacing: 5px;">{{myMessage}}</h1>
+            <h1 style="color:#fff;margin: 5%;font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;">{{Max_Amount}}</h1>
+        </div>
+        
+
+        {%endif%}
+    </div>
+
+</div>
+
+{%endblock%}

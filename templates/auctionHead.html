@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>{% block title %}{% endblock title%}</title>
+        {%load static%}
+        <link rel="shortcut icon" href="{% static 'img/favicon.ico'%}" type="image/x-icon">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="">
+        <!-- CSS only -->
+        
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+        {%block style%}
+        {%endblock%}
+        <style>
+    
+          #myHeading
+          {
+              letter-spacing: 2px;
+              font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+              
+              /* background: linear-gradient(180deg,#fdad01,#ff0419); */
+              background-image:url("{%static 'img/fire.gif'%}");
+              background-repeat: no-repeat;
+              background-position: center;
+              background-size: 100%,100%;
+              -webkit-background-clip: text;
+              background-clip: text;
+              
+              /* color:#3a0404; */
+              color:transparent;
+          }
+          #biddingHeadingBackground
+          {
+              background: linear-gradient(30deg,#ffee12,#c94a18);
+          }
+      </style>
+        
+    </head>
+    <body>
+        <h1 class="bg-dark text-light text-center">Welcome to <span class="text-warning">Auction </span>Bidding</h1>
+
+         <div class="container-fluid p-2">
+            <div class="row">
+              <div class="col-sm-3">
+                      <p class="mark" style="font-family: Georgia, 'Times New Roman', Times, serif;">We heartly and warmly welcome you  <span style="font-weight: bold;font-family: Verdana, Geneva, Tahoma, sans-serif;text-transform: uppercase;letter-spacing: 2px;"> {{user.first_name}}</span>. Please take the pleasure to visit our site and don't forget to share
+                        the innovation of technology with your friends and enjoy auctioning.Thanking you from our team.
+                      </p>
+              </div>
+              <div class="col-sm-3">
+                {%load static%}
+                <img class="img-thumbnail" src="{%static 'img/auction.webp'%}" alt="" srcset="" height="auto" width="100%">
+               
+              </div>
+              <div class="col-sm-6">
+                <dl>
+                  <dt>Step by step Procedures to work on the sites</dt>
+                  <dd>--Add Products... if you have any? This is done by clicking on the menu Add Products</dd>
+                  <dd>--Bid on Products... if you want to bid on products then by clicking on the menu products on bid you can bid on the products
+                  </dd>
+                </dl>
+              </div>
+            </div>
+         </div>
+         <hr>
+       
+       <div class="container-fluid bg-dark">
+        <nav class="navbar navbar-expand-lg navbar-light bg-dark">
+            <div class="container-fluid">
+              <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+              
+              <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+                <ul class="navbar-nav mr-auto mb-2 mb-lg-0">
+                  <li class="nav-item">
+                    <a class="nav-link text-light" href="/">Home</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link text-light" aria-current="page" href="../addProducts">Add Products</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link text-light" href="../OnBidProducts">On Bidding</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link text-light" href="../ViewProducts" tabindex="-1">View My Products</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link text-light" href="../ViewBiddedProducts" tabindex="-1">View Bidded Products</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link text-light" href="../ViewProductsGettingBidded" tabindex="-1">View Products</a>
+                  </li>
+                </ul>
+                <div class="d-flex">
+                    <a class="nav-link" href="/log_out" tabindex="-1" aria-disabled="true">Logout</a>
+                  <button class="btn btn-outline-success" type="submit">Welcome {{user.first_name}} {{user.last_name}}</button>
+                </div>
+              </div>
+            </div>
+          </nav>
+        </div>
+
+        
+
+
+{% block body %} {% endblock body %}
+
+<div class="container-fluid bg-dark p-1" id="footer">
+  <p class="text-light text-center">Copyright © {{datetime }} all right Reserved. This website is maintained by Sagar, Arjun and Nabin</p>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+{% load static %}
+<script src="{%static 'js/script.js' %}"></script>
+{% block scripts %}
+
+{% endblock %}
+
+</body>
+
+</html>

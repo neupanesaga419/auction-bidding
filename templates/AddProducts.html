@@ -1,0 +1,106 @@
+{% extends 'auctionHead.html' %}
+
+
+{% block title%}Add Products{%endblock%}
+
+{%block body%}
+
+{%block style%}
+
+<style>
+#AddProductsBackground
+{
+    background: radial-gradient(closest-side,rgba(162, 220, 247, 0.993),rgba(158, 225, 241, 0.933),rgb(227, 194, 247));
+}
+</style>
+
+
+{%endblock%}
+<hr>
+<div class="container-fluid" id="biddingHeadingBackground">
+    <h2 id="myHeading" class="text-center text-uppercase p-3"> Add Products</h2>
+</div>
+
+<hr>
+<br>
+<div class="container-fluid border" id="AddProductsBackground">
+    
+ 
+    <form action="" method="POST" enctype="multipart/form-data" style="padding: 10px;" onsubmit="formValidate()">
+        {% csrf_token %}
+        
+        <input type="hidden" name="creator" value={{user.id}}>
+        <div class="row">
+            <div class="col-sm-6">
+                <label for="" class="text-b">Product Name</label>
+                <input type="text" name="product_name" id="" class="form-control" required>
+                <br>
+            </div>
+            <div class="col-sm-6">
+                <label for="">Select The Category</label>
+                    <select name="category" id="" class="form-control" required>
+                        <option value="">Select Any Options</option>
+                        {% for item in categoryItem %}
+                        <option value={{item.id}}>{{item.category_name}}</option>
+                        
+                        {% endfor %}
+                    </select>
+                <br>
+            </div>
+            <div class="col-sm-6">
+                <label for="">Product Image</label>
+                <input type="file" name="product_image_path" id="" class="form-control" required>
+                <br>
+            </div>
+            
+            <div class="col-sm-6">
+                <label for="">Min_bid_amount</label>
+                <input type="text" name="min_bid_amount" class="form-control" id="bidAmount" onchange="floatCheck()" required>
+                <span id="show" class="text-danger"></span>
+                <br>
+            </div>
+            <div class="col-sm-6">
+                <label for="">Select The bidding Date and time</label>
+                    <select name="product_bid_time" id="" class="form-control" required>
+                        <option value="">Select any Options......</option>
+                        {% for item in timeBidItem %}
+                        <option value={{item.id}}>{{item.bid_day}} || {{ item.bid_start_time}}</option>
+                        
+                        {% endfor %}
+                    </select>
+                <br>
+            </div>
+            <div class="col-sm-6">
+
+            </div>
+            <div class="col-sm-12">
+                <label for="">Product Description</label>
+                <textarea name="product_description" id="" cols="30" rows="10" class="form-control" required></textarea>
+            </div>
+
+            <div class="col-sm-3">
+
+            </div>
+            <div class="col-sm-6">
+                <br>
+                <input type="submit" value="submit" class="btn btn-success">
+                <br>
+                <br>
+            </div>
+            <div class="col-sm-3">
+
+            </div>
+        </div>
+
+    </form>
+
+
+
+
+
+
+
+</div>
+
+
+{%endblock%}

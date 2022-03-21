@@ -1,0 +1,60 @@
+{% extends 'auctionHead.html' %}
+
+
+{% block title %} Bid For Items {% endblock %}
+
+
+{% block scripts %}
+{% load static%}
+<script src="{%static 'js/BidScripts.js'%}"></script>
+{%endblock%}
+
+{% block body %}
+{% for item in product %}
+<div class="container my-5">
+    
+    <div class="row border border-warning p-5  border-4" style="border-style:dashed;">
+        <h3 class="font-weight-bold"><span class="font-weight-bold">Product Name : </span>{{item.product_name}}</h3>
+        <span class="border border-info p-3 bg-light rounded-top rounded-bottom"><img src="{{MEDIA_URL}}{{item.product_image_path}}" alt="" height="350px" width="450px"></span>
+
+        <h4>Product Description :{{item.product_description}}</h4>
+        <span class="font-weight-bold fs-1">Product Min Amount</span><h4 id="min_bid_amount">{{item.min_bid_amount}}</h4>
+        {% if Max_Amount != null %}
+        <h2>The Maximum Bid Till Now is <span id="MaxValue">{{Max_Amount}}</span></h2>
+        {% else %}
+        <h2>Noone Has Bidded Yet!.</h2>
+        {%endif%}
+    </div>
+
+
+</div>
+
+<form action="" method="POST" onsubmit="return checkValue()" name="my_form">
+        {% csrf_token %}
+<div class="container">
+    <h2>Enter Your Bidding Amount</h2>
+    <h4>Note: Your Bidding Amount must be greater than Product Min Amount</h4>
+    <div class="row">
+        <div class="col-sm-6 border-warning p-3">
+            <input type="number" name="bid_amount" id="inputValue" class="form-control">
+        </div>
+        <div class="col-sm-6">
+
+        </div>
+        <br>
+
+        <div class="col-sm-6 p-2">
+            <input type="submit" value="Place My Bid" class="btn btn-primary">
+            
+        </div>
+        <br>
+    </div>
+    <br>
+    
+    
+</div>
+</form>
+{%endfor%}
+
+
+{% endblock %}

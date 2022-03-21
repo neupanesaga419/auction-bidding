@@ -1,0 +1,237 @@
+{% extends "auctionHead.html" %}
+{% block title %}View Products{% endblock %}
+{% block style %}
+<style>
+    #myProductsBackground
+    {
+        background: radial-gradient(closest-side,rgba(248, 207, 73, 0.993),rgba(255, 125, 78, 0.933),rgb(245, 183, 145));
+    }
+    #cardBackground
+    {
+        background:linear-gradient(60deg,rgba(248, 118, 96, 0.658),rgba(252, 133, 89, 0.933));
+        border-radius: 1.2rem;
+        border:2px solid salmon;
+    }
+    #myCardList
+    {
+        
+        border: 1.2px solid #a1233a;
+        border-radius:1rem;
+    }
+    .list-group-item
+    {
+        background: linear-gradient(90deg,rgba(248,118,96,0.8),rgba(252,130,80,0.99));
+    }
+    .myText
+    {
+        color:#080000;
+        font-weight: bolder;
+    }
+    .animation
+    {
+        height: 5%;
+        width: 3%;
+        border-radius: 50%;
+        background:radial-gradient(closest-side,#e6e9fa,#637763,#ebeef7);
+        position:absolute;
+        z-index: -1;
+        animation:animate 10s linear infinite alternate;
+
+    }
+    @keyframes animate
+    {
+        0%
+        {
+            top:0%;
+            left:0%;
+            background:radial-gradient(closest-side,#e6e9fa,#637763,#ebeef7);
+        }
+        25%
+        {
+            top:0%;
+            left:100%;
+            background:radial-gradient(closest-side,#a0abec,#375037,#2c3a63);
+        }
+        50%
+        {
+            top:100%;
+            left:100%;
+            background:radial-gradient(closest-side,#b4f054,#ac0a76,#ebc807);
+        }
+        75%
+        {
+            top:100%;
+            left:0%;
+            background:radial-gradient(closest-side,#e60374,#ee5c22,#f51427);
+        }
+        100%
+        {
+            top:0%;
+            left:0%;
+            background:radial-gradient(closest-side,#dd3f00,#17e0e0,#580137);
+        }
+
+    }
+</style>
+{% endblock %}
+{% block body %}
+<hr>
+<div class="container-fluid" id="biddingHeadingBackground">
+    <h2 id="myHeading" class="text-center text-uppercase p-3"> Products Getting Bidded</h2>
+</div>
+<hr>
+<!-- <div class="animation">
+
+</div> -->
+<div class="container-fluid p-5" id="myProductsBackground">
+    <div class="row">
+        {%for item in product%}
+        <div class="col-sm-4">
+            <div class="card p-2" style="width: 18rem;" id="cardBackground">
+                <img src="{{MEDIA_URL}}{{item.product_image_path}}" height="150px" width="150px" class="">
+                <div class="card-body">
+                  <h5 class="card-title">{{item.product_name}}</h5>
+                  <p class="card-text">{{item.product_description}}</p>
+
+                </div>
+                <ul class="list-group list-group-flush" id="myCardList">
+                {% for categoryitem in Category%}
+                    {% if categoryitem.id == item.category %}
+                  <li class="list-group-item"> <span class="myText"> Category: </span>{{categoryitem.category_name}}</li>
+                    {% endif %}
+                {% endfor %}
+                {% for itemuser in user%}
+                    {% if itemuser.id == item.creator %}
+                  <li class="list-group-item"><span class="myText"> Creator: </span>{{itemuser.first_name}} {{itemuser.last_name}}</li>
+                    {% endif %}
+                {% endfor %}
+                  
+                  <li class="list-group-item"><span class="myText"> Min Bid Amount: </span> {{item.min_bid_amount}}</li>
+                <li class="list-group-item myText JavaScriptData{{item.product_bid_time}}"></li>
+                {% for timeitem in time %}
+                    {% if timeitem.id == item.product_bid_time %}
+                    <li class="list-group-item">Bidding Day: {{timeitem.bid_day}}</li>
+                    {% endif %}
+                {% endfor %}
+                </ul>
+                
+                <div class="card-body">
+                  <a href="#" class="card-link btn btn-danger" >View</a>
+                  
+                </div>
+              </div>
+              <br>
+        </div>
+
+
+        {%endfor%}
+
+    </div>
+</div>
+
+{%endblock%}
+
+{% block scripts %}
+
+<script>
+
+var data = JSON.parse("{{data|escapejs}}");
+var keys1 = Object.keys(data);
+
+months = {"01":"January","02":"February","03":"March","04":"April","05":"May","06":"June","07":"July","08":"August","09":"September","10":"October","11":"November","12":"December"};
+
+function countdown(idToPrint,deadline)
+{
+    var y = setInterval(function() {
+    var now = new Date().getTime();
+    var t = deadline - now;
+    var days = Math.floor(t / (1000 * 60 * 60 * 24));
+    var hours = Math.floor((t%(1000 * 60 * 60 * 24))/(1000 * 60 * 60));
+    var minutes = Math.floor((t % (1000 * 60 * 60)) / (1000 * 60));
+    var seconds = Math.floor((t % (1000 * 60)) / 1000);
+    for (let i=0; i< document.getElementsByClassName(`${idToPrint}`).length;i++){
+        
+        document.getElementsByClassName(`${idToPrint}`)[i].innerHTML ="Remaining Bidding Time:: "+ days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
+    }
+    
+        if (t < 0) {
+            clearInterval(y);
+            document.getElementsByClassName(`${idToPrint}`).innerHTML = "EXPIRED";
+        }
+    }, 1000);
+}
+
+for(x in keys1)
+{
+    // console.log(x);
+    // console.log(data[keys1[x]]['bid_day']);
+    date_from_db = data[keys1[x]]["bid_day"];
+    let newDate = date_from_db.split("-");
+    day_from_db = newDate[2];
+    month_from_db = newDate[1];
+    year_from_db = newDate[0];
+    var deadline = new Date(months[month_from_db] + " "+ day_from_db+ "," + year_from_db+ " 00:00:00").getTime();
+    var idToPrint = "JavaScriptData"+keys1[x];
+    // document.getElementById(`${idToPrint}`).innerHTML = "HIII";
+    console.log(idToPrint);
+    countdown(idToPrint,deadline);
+
+
+};
+
+
+// date_from_db = data["13"]["bid_day"];
+
+// // start_time_from_db = data["13"]["bid_start_time"];
+// let newDate = date_from_db.split("-")
+
+// day_from_db = newDate[2];
+// month_from_db = newDate[1];
+// year_from_db = newDate[0];
+
+// // console.log(months[month_from_db]);
+// var deadline = new Date(months[month_from_db] + " "+ day_from_db+ "," + year_from_db+ " 00:00:00").getTime();
+// // var now = new Date().getTime();
+
+// console.log(deadline);
+// // console.log(now);
+
+// var x = setInterval(function()
+//  {
+// var now = new Date().getTime();
+// var t = deadline - now;
+// var days = Math.floor(t / (1000 * 60 * 60 * 24));
+// var hours = Math.floor((t%(1000 * 60 * 60 * 24))/(1000 * 60 * 60));
+// var minutes = Math.floor((t % (1000 * 60 * 60)) / (1000 * 60));
+// var seconds = Math.floor((t % (1000 * 60)) / 1000);
+// document.getElementById("JavaScriptData13").innerHTML = days + "d " 
+// + hours + "h " + minutes + "m " + seconds + "s ";
+//     if (t < 0) {
+//         clearInterval(x);
+//         document.getElementById("JavaScriptData13").innerHTML = "EXPIRED";
+//     }
+// }, 1000);
+
+// console.log(start_time_from_db);
+
+// var month = new Date().getMonth() + 1;
+
+// var year = new Date().getFullYear();
+// var date = new Date().getDate();
+// console.log(month +" " + year)
+// console.log(month+ "-" + date);
+
+// console.log(new Date(year,3,0).getDate()); 
+
+// for (const key in data){
+//     var x = data[key];
+//     for (const key in x)
+//     {
+//         var y = x[key];
+//         console.log(y);
+//     }
+//     console.log(x);
+// }
+
+</script>
+{% endblock %}

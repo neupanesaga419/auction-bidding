@@ -1,0 +1,78 @@
+
+
+{% extends 'loginHeader.html' %}
+{% block title %} Signup {% endblock %}       
+{% block body %}
+        <form action="" method="POST">
+            {% csrf_token %}
+
+        <div class="container">
+            <div class="row">
+               
+                <div class="col-md-3">
+                    <h1>Welcome To User Registration Panel</h1>
+                    {% if messages %}
+                    <ul class="messages">
+                        {% for message in messages %}
+                        <li {% if message.tags %} class="{{ message.tags }}"{% endif %}><h4 class="btn-danger">{{ message }}</h4>
+                            
+                          </li>
+                          
+                          {% endfor%}
+
+                    </ul>
+                    {% endif %}
+                  
+                </div>
+               <div class="col">
+                <div class="form-group col-md-6">
+                    <label for="inputEmail4">Email</label>
+                    <input type="email" class="form-control" id="inputEmail4" placeholder="Email" name="email" required>
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label for="inputPassword4">Password</label>
+                    <input type="password" class="form-control" id="inputPassword4" placeholder="Password" name="password" required>
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label for="inputConfirmPassword4">Confirm Password</label>
+                    <input type="password" class="form-control" id="inputConfirmPassword4" placeholder="Confirm password" name="cpass" required>
+                  </div>
+                
+                <div class="form-group col-md-6">
+                    <label for="inputPassword4">First Name</label>
+                    <input type="text" class="form-control" id="inputPassword4" placeholder="First Name" name="fname" required>
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label>Last Name</label>
+                    <input type="text" class="form-control"  placeholder="Last Name" name="lname" required>
+                  </div>
+                  <br>
+                  {% comment %} <div class="form-group col-md-6">
+                    <label> Select User Type</label>
+                    <select name="usertype" id="" class="form-control">
+                        <option value="1">Seller</option>
+                        <option value="2">Buyer</option>
+                    </select>
+                  </div> {% endcomment %}
+                    <br>
+                  <div class="form-group col-md-6">
+                    <button type="submit" class="btn btn-success">submit</button>
+                  </div>
+                  <br>
+                  <div class="form-group col-md-6">
+                    <p>Already signed?Click down</p>
+                      <a href="../login" class="btn btn-info">Log In</a>
+                  </div>
+                </div>
+
+                <div class="col-md-3">
+                    {% load static %}
+                    <img src="{% static 'img/login.gif' %}" alt="" height="450px" width="250px" class="form-control">
+                </div>
+            </div>
+            <!-- end -->
+        </div>   
+        </form>
+    
+  {% endblock %}   
+   

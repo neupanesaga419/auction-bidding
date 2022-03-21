@@ -1,0 +1,56 @@
+{% extends 'loginHeader.html' %}
+
+
+{% block body %}
+<div class="container">
+    <form action="" method="POST" class="text-center">
+        {% csrf_token %}
+        <h1>Welcome to User Login</h1>
+        <div class="row">
+            <div class="col-md-2">
+                
+            </div>
+            <div class="col">
+                <div class="form-group col-md-6">
+                    <label for="inputEmail4">Email</label>
+                    <input type="email" class="form-control" id="inputEmail4" placeholder="Email" name="email">
+                  </div>
+                  <br>
+                  <div class="form-group col-md-6">
+                    <label for="inputPassword4">Password</label>
+                    <input type="password" class="form-control" id="inputPassword4" placeholder="Password" name="pass_word">
+                  </div>
+                  <br>
+                  <div class="form-group col-md-4">
+                    <input type="submit" value="Login" class="btn btn-success">
+                  </div>
+                  <br>
+                  <div class="form-group col-md-4">
+                    <a href="../signup" class="btn btn-info">Register</a>
+                  </div>
+                  
+            </div>
+            <div class="col-md-3">
+                {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                    <li {% if message.tags %} class="{{ message.tags }}"{% endif %}><h4 class="btn-danger">{{ message }}</h4>
+                        
+                      </li>
+                      
+                      {% endfor%}
+
+                </ul>
+                {% endif %}
+            </div>
+        </div>
+      
+        
+
+
+    </form>
+
+</div>
+ 
+        
+  {% endblock %}

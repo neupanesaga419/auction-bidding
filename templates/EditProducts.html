@@ -1,0 +1,107 @@
+{% extends 'auctionHead.html' %}
+
+
+{% block title%}Add Products{%endblock%}
+
+{%block body%}
+<hr>
+<br>
+<div class="container border">
+
+ 
+    <form action="" method="POST" enctype="multipart/form-data" style="padding: 10px;">
+        {% csrf_token %}
+        {% comment %} {% for dataItem in entriesFromDb %} {% endcomment %}
+
+
+        <input type="hidden" name="creator" value={{user.id}}>
+        <div class="row">
+
+            <div class="col-sm-6">
+                <label for="" class="text-b">Product Name</label>
+                <input type="text" name="product_name" id="" class="form-control" value="{{dataItem.product_name}}" required>
+                <br>
+            </div>
+
+            <div class="col-sm-6">
+                <label for="">Select The Category</label>
+                    <select name="category" id="" class="form-control" required>
+                        {% comment %} For checking the data id to show {% endcomment %}
+                        {%for item in categoryItem%}
+                        {% if dataItem.category == item.id %}
+                        <option value="{{item.id}}">{{item.category_name}}</option>
+                        {%endif%}
+                        {%endfor %}
+                        
+                        
+                        {% for item in categoryItem %}
+                        <option value={{item.id}}>{{item.category_name}}</option>
+                        {% endfor %}
+                    </select>
+                <br>
+            </div>
+            <div class="col-sm-6">
+                {% if dataItem.product_image_path %}
+                <img src="{{ dataItem.product_image_path.url }}" alt="image here" class="prod-size" height="150px" width="150px">
+                {% endif %}
+                <label for="">Product Image</label>
+                <input type="file" name="product_image_path" id="" class="form-control" required>
+                <br>
+            </div>
+            
+            <div class="col-sm-6">
+                <label for="">Min_bid_amount</label>
+                <input type="text" name="min_bid_amount" id="" value="{{dataItem.min_bid_amount}}" class="form-control" required>
+                <br>
+            </div>
+            <div class="col-sm-6">
+                <label for="">Select The bidding Date and time</label>
+                    <select name="product_bid_time" id="" class="form-control" required>
+                        
+                        {%for item in timeBidItem %}
+                        {% if dataItem.product_bid_time == item.id %}
+                        <option value="{{item.id}}">{{item.bid_day}} || {{ item.bid_start_time}}</option>
+                        {%endif%}
+                        {%endfor %}
+
+
+                        {% for item in timeBidItem %}
+                        <option value={{item.id}}>{{item.bid_day}} || {{ item.bid_start_time}}</option>
+                        {% endfor %}
+                    </select>
+                <br>
+            </div>
+            <div class="col-sm-6">
+
+            </div>
+            <div class="col-sm-12">
+                <label for="">Product Description</label>
+                <textarea name="product_description" id="" cols="30" rows="10" class="form-control" required>{{dataItem.product_description}}</textarea>
+            </div>
+
+            <div class="col-sm-3">
+
+            </div>
+            <div class="col-sm-6">
+                <br>
+                <input type="submit" value="Update" class="btn btn-success">
+                <br>
+                <br>
+            </div>
+            <div class="col-sm-3">
+
+            </div>
+        </div>
+        {% comment %} {% endfor %} {% endcomment %}
+    </form>
+
+
+
+
+
+
+
+</div>
+
+
+{%endblock%}

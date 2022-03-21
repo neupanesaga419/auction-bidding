@@ -1,0 +1,87 @@
+{% extends 'auctionHead.html' %}
+
+
+{%block title %}View Products{% endblock %}
+
+{% block body %}
+<hr>
+<div class="container-fluid" id="biddingHeadingBackground">
+    <h2 id="myHeading" class="text-center text-uppercase p-3"> Your Products</h2>
+</div>
+
+<hr>
+
+
+<div class="container">
+    <div class="row">
+        {% for item in myEntry %}
+        <div class="col-md-4">
+           
+            <div class="card" style="width: 18rem;">
+              {% comment %} {% load static %}
+              <img src="{% static 'img/auctioningLogin.gif' %}" class="card-img-top" alt="" height="150px" width="100px"> {% endcomment %}
+              
+              <div class="card-body">
+                <img src="{{MEDIA_URL}}{{item.product_image_path}}" height="150px" width="150px" >
+                <h5 class="card-title">{{item.product_name}}</h5>
+                <p class="card-text">{{item.product_description}}</p>
+              </div>
+              <ul class="list-group list-group-flush">
+                  
+                <li class="list-group-item"><span class="text-success">Minimum bid amount: Rs</span> <span class="text-danger">{{item.min_bid_amount}}</span></li>
+                {% for time in timeEntry %}
+                {% if time.id == item.product_bid_time %}
+                <li class="list-group-item">
+                    <span class="text-info">Start Time </span>
+                    {{time.bid_start_time}}
+                </li>
+                <li class="list-group-item">
+                    <span class="text-info">End Time </span>
+                    {{time.bid_end_time}}
+                </li>
+                {% comment %} {% break %}{% endbreak %} {% endcomment %}
+                {% endif %}
+                
+                {% endfor %}
+
+                <li class="list-group-item">Added Time: <br>{{item.added_date}}</li>
+              </ul>
+              
+              {% for time in timeEntry %}
+              {% if time.id == item.product_bid_time %}
+                {% if dateToday < time.bid_day %}
+                {% comment %} <h1>Hwllo world</h1> {% endcomment %}
+              <div class="card-body">
+                <div class="container-fluid">
+                  <div class="row">
+                    <div class="col-md-4">
+                      <a href="../EditProducts/{{item.id}}" class="btn btn-info">Edit</a>
+                    </div>
+                    
+                    <div class="col-md-4">
+                      <a href="../DeleteProducts/{{item.id}}" class="btn btn-danger">Delete</a>
+                    </div>
+                  </div>
+
+                </div>
+                
+
+               
+              </div>
+              {% endif %}
+              {% endif %}
+              {% endfor %}
+            </div>
+            <br>
+            
+        </div>
+          {%endfor%}
+    </div>
+
+</div>
+
+
+
+
+
+  {% endblock%}

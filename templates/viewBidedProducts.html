@@ -1,0 +1,40 @@
+{% extends 'auctionHead.html' %}
+
+{%block title%}View Bided Products{%endblock%}
+
+
+{%block body %}
+<hr>
+<div class="container-fluid" id="biddingHeadingBackground">
+  <h2 id="myHeading" class="text-center text-uppercase p-3"> These Products are already Bidded</h2>
+</div>
+<hr>
+
+<div class="container-fluid p-5">
+    <div class="row p-2">
+        {%for item in bidded_products %}
+
+        <div class="col-sm-4 p-2">
+            <div class="card" style="width: 18rem;">
+                
+                <div class="card-body">
+                    <img class="card-img-top" src="{{MEDIA_URL}}{{item.product_image_path}}" alt="Card image cap" height="150px" width="100px">
+                  <h5 class="card-title">{{item.product_name}}</h5>
+                  <p class="card-text">{{item.product_description}}</p>
+                </div>
+                <ul class="list-group list-group-flush">
+                  <li class="list-group-item"><h3>Item Min Bid Amount</h3>{{item.min_bid_amount}}</li>
+                </ul>
+                <div class="card-body">
+                  <a href="../ViewWinner/{{item.id}}" class="btn btn-info mx-3">View Winner Details</a>
+                  
+                </div>
+              </div>
+        </div>
+
+        {%endfor%}
+    </div>
+</div>
+
+
+{%endblock%}

@@ -1,0 +1,124 @@
+{% extends 'auctionHead.html' %}
+
+
+{%block title%}Currently on Bid{%endblock%}
+
+
+
+
+{% block body %}
+
+{%block style%}
+{%load static%}
+<style>
+    
+    #myHeading
+    {
+        letter-spacing: 2px;
+        font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+        
+        /* background: linear-gradient(180deg,#fdad01,#ff0419); */
+        background-image:url("{%static 'img/fire.gif'%}");
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: 100%,100%;
+        background-clip: text;
+        /* color:#3a0404; */
+        color:transparent;
+    }
+    #biddingHeadingBackground
+    {
+        background: linear-gradient(30deg,#ffee12,#c94a18);
+    }
+</style>
+
+{%endblock%}
+<hr>
+<div class="container-fluid" id="biddingHeadingBackground">
+    <h2 id="myHeading" class="text-center text-uppercase p-3"> These are the products that you can bid on</h2>
+</div>
+
+<hr>
+<div class="container">
+    <div class="row">
+        {%for item in product %}
+        {%for bid_time in bidDay %}
+        {% if bid_time.id == item.product_bid_time %}
+
+            <div class="col-md-4 my-5">
+                
+                <div class="card  border-4 border-danger border-dashed" style="width: 18rem;border-style:dashed;">
+                
+                <div class="card-body">
+                    <img src="{{MEDIA_URL}}{{item.product_image_path}}" height="150px" width="150px" class="" >
+                    <h5 class="card-title">{{item.product_name}}</h5>
+                    <p class="card-text">{{item.product_description}}</p>
+                </div>
+                <ul class="list-group list-group-flush">
+                    
+                    <li class="list-group-item"><span class="text-success">Minimum bid amount: <br>Rs</span> <span class="text-danger">{{item.min_bid_amount}}</span></li>
+                    {% for time in bidDay %}
+                    {% if time.id == item.product_bid_time %}
+                    <li class="list-group-item">
+                        <span class="text-info">Start Time </span>
+                        <span id="startTime">{{time.bid_start_time}}</span>
+                    </li>
+                    <li class="list-group-item">
+                        <span class="text-info">End Time </span>
+                        <span id="endTime">{{time.bid_end_time}}</span>
+                    </li>
+                    {% comment %} {% break %}{% endbreak %} {% endcomment %}
+                    {% endif %}
+                    
+                    {% endfor %}
+
+                    <li class="list-group-item"><span class="text-info">Item ADDED: </span>{{item.added_date}}</li>
+                </ul>
+
+
+                    {%if item.creator == user.id %}
+                    <div class="card-body">
+                        <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-4">
+                            <a href="../EditProducts/{{item.id}}" class="btn btn-info">Edit</a>
+                            </div>
+                            <div class="col-md-4">
+                            
+                            </div>
+                            <div class="col-md-4">
+                            <a href="../DeleteProducts/{{item.id}}" class="btn btn-danger">Delete</a>
+                            </div>
+                        </div>
+
+                        </div>
+                    </div>
+                    {% else %}
+                    
+                    <div class="card-body">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-4">
+                                   
+                                    <a href="../BidEntry/{{item.id}}" class="btn btn-warning">Bid</a>
+                        
+                                </div>
+                            </div>
+        
+                        </div>
+                    </div>
+                    
+                    
+                    {% endif %}
+
+                </div>
+                </div>
+
+        {%endif%} 
+        {%endfor%}
+        {%endfor%}
+    </div>
+
+</div>
+
+{%endblock%}
