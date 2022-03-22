@@ -4,6 +4,7 @@ from django.contrib import admin
 from django.contrib.auth.models import Group
 admin.site.unregister(Group)
 from .models import *
+# from django.contrib.sessions import django_session
 # import adminlte3
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):
@@ -79,3 +80,4 @@ class BiddingAmountAdmin(admin.ModelAdmin):
 
 admin.site.site_header = "Auction Bidding"
 # admin.site.unregister(Group)
+# @admin.register(django_session)

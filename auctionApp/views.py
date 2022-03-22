@@ -238,7 +238,7 @@ def AddProducts(request):
             else:
                return HttpResponse("Enter Bidding amount in numbers")
         else:
-            return HttpResponse("your image got wrong extensions")
+            return HttpResponse("your image got wrong extensions Please Enter Image File. The extensions must be jpeg, gif,svg,png,webpm,jpg")
     
     Entries = Category.objects.all()
     Entries2 = BiddingTime.objects.filter(bid_day__gte=date_today)
@@ -345,7 +345,7 @@ def OnBid(request):
             timeId.append(item.id)
             print(timeId)
     Time_Bound = BiddingTime.objects.all().filter(id__in=timeId)
-    # print(Time_Bound)
+    # print(Time_Boupnd)
     # dataJSON = dumps(Time_Bound)
     Context = {'product':product,"bidDay":Time_Bound,'datetime':date_for_site}
     return render(request,"ProductsOnBid.html",Context)
