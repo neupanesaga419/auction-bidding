@@ -41,9 +41,11 @@
 <hr>
 <div class="container">
     <div class="row">
-        {%for item in product %}
-        {%for bid_time in bidDay %}
-        {% if bid_time.id == item.product_bid_time %}
+        {% for item in product %}
+        {% for time1 in bidDay %}
+        {% comment %} {{item1.id}}
+        {{item.product_bid_time}} {% endcomment %}
+        {% if time1.id == item.product_bid_time %}
 
             <div class="col-md-4 my-5">
                 

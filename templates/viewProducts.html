@@ -32,6 +32,10 @@
                 {% for time in timeEntry %}
                 {% if time.id == item.product_bid_time %}
                 <li class="list-group-item">
+                  <span class="text-info">Bid Day </span>
+                  {{time.bid_day}}
+              </li>
+                <li class="list-group-item">
                     <span class="text-info">Start Time </span>
                     {{time.bid_start_time}}
                 </li>

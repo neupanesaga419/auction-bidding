@@ -241,7 +241,7 @@ def AddProducts(request):
             return HttpResponse("your image got wrong extensions")
     
     Entries = Category.objects.all()
-    Entries2 = BiddingTime.objects.filter(bid_day__gt=date_today)
+    Entries2 = BiddingTime.objects.filter(bid_day__gte=date_today)
     
     Context = {'categoryItem':Entries,
                'timeBidItem':Entries2,
@@ -330,13 +330,22 @@ from django.db.models import Q
 
 @login_required(login_url='log_in')
 def OnBid(request):
-    
+    from datetime import datetime,timedelta
+    now = datetime.now()
     user = request.user
     product = Product.objects.all().filter(~Q(creator=user.id))
     date_today = date.today()
     
     # print(date_today)
     Time_Bound = BiddingTime.objects.all().filter(bid_day=date_today)
+    timeId = []
+    for item in Time_Bound:
+        # print(item.bid_start_time)
+        if item.bid_start_time < now.time() and item.bid_end_time > now.time():
+            timeId.append(item.id)
+            print(timeId)
+    Time_Bound = BiddingTime.objects.all().filter(id__in=timeId)
+    # print(Time_Bound)
     # dataJSON = dumps(Time_Bound)
     Context = {'product':product,"bidDay":Time_Bound,'datetime':date_for_site}
     return render(request,"ProductsOnBid.html",Context)
@@ -429,35 +438,45 @@ def view_timeoutdated_products(request):
     time = BiddingTime.objects.all().filter(bid_day__lt=date_today)
     
     # Just for test
-    
+    timeId = []
     from datetime import datetime,timedelta
     now = datetime.now()
     current_time = now.strftime("%H:%M:%S")
-    print(current_time)
-    time1 = BiddingTime.objects.all().filter(bid_day__lte=date_today)
-    for item in time1:
+    # print(current_time)
+    # time1 = BiddingTime.objects.all()
+    print(time)
+    # For all the time items having day less than today
+    for item in time:
+        timeId.append(item.id)
+        print(timeId)
+    
+    time2 = BiddingTime.objects.all().filter(bid_day=date_today)
+    for item in time2:
         bid_start_day = item.bid_day
         bid_start_time = item.bid_start_time
         combined = datetime.combine(bid_start_day,bid_start_time)
         time_after_30_min = combined + timedelta(minutes=30)
-        if bid_start_time < now.time():
-            print("hello World")
+        # if bid_start_time < now.time() and item.bid_end_time > now.time():
+        if item.bid_end_time < now.time():
+            timeId.append(item.id)
+            print(timeId)
         # print(time_after_30_min)
     # print(datetime.now())
-    end_time = now + timedelta(minutes=30)
-    end_time = end_time.strftime("%H:%M:%S")
+    # end_time = now + timedelta(minutes=30)
+    # end_time = end_time.strftime("%H:%M:%S")
     # print(end_time)
     
-    time2 = BiddingTime.objects.all().filter(bid_start_time__gte=current_time,bid_end_time__lte=end_time)
+    # time2 = BiddingTime.objects.all().filter(bid_start_time__gte=current_time,bid_end_time__lte=end_time)
     # print(time2)
-    for item in time2:
-        print(item.bid_start_time)
-        print("heloo World")
-        
+    # for item in time2:
+    #     # print(item.bid_start_time)
+    #     # print("heloo World")
+    #     pass
     # TESt TEST TEST
-    timeId = []
-    for item in time:
-        timeId.append(item.id)
+    
+    
+    # timeId = []
+    
     # print(timeId)
     Bidded_Products = BiddingAmount.objects.all()
     biddedItemId = []
