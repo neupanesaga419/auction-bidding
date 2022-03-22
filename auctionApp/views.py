@@ -40,7 +40,7 @@ def signup(request):
             user = User.objects.create_user(email=email,password=confirm_pass,first_name=fname,last_name=lname)
             user.is_active=False
             user.save()
-            
+            messages.success(request,"We have sent you the confirmation email in your email account please verify to login")
             
             # Sending Mail To User
             # Welcome Mail
@@ -425,7 +425,36 @@ def Bid_Entry(request,id):
 @login_required(login_url='log_in')   
 def view_timeoutdated_products(request):
     date_today = date.today()
+    print(date_today)
     time = BiddingTime.objects.all().filter(bid_day__lt=date_today)
+    
+    # Just for test
+    
+    from datetime import datetime,timedelta
+    now = datetime.now()
+    current_time = now.strftime("%H:%M:%S")
+    print(current_time)
+    time1 = BiddingTime.objects.all().filter(bid_day__lte=date_today)
+    for item in time1:
+        bid_start_day = item.bid_day
+        bid_start_time = item.bid_start_time
+        combined = datetime.combine(bid_start_day,bid_start_time)
+        time_after_30_min = combined + timedelta(minutes=30)
+        if bid_start_time < now.time():
+            print("hello World")
+        # print(time_after_30_min)
+    # print(datetime.now())
+    end_time = now + timedelta(minutes=30)
+    end_time = end_time.strftime("%H:%M:%S")
+    # print(end_time)
+    
+    time2 = BiddingTime.objects.all().filter(bid_start_time__gte=current_time,bid_end_time__lte=end_time)
+    # print(time2)
+    for item in time2:
+        print(item.bid_start_time)
+        print("heloo World")
+        
+    # TESt TEST TEST
     timeId = []
     for item in time:
         timeId.append(item.id)
@@ -515,3 +544,5 @@ def view_products_going_to_bid(request):
     dataJSON = dumps(timeDictonary,indent=4, sort_keys=True, default=str)
     context = {"product":product,"user":user,"Category":category,"time":time,"data":dataJSON}
     return render(request,"goingtobid.html",context)
+
+
