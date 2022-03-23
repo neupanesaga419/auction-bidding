@@ -375,56 +375,68 @@ def bubbleSort(arr):
 @login_required(login_url='log_in')
 def Bid_Entry(request,id):
     # bidEdit = BiddingAmount.objects.get(product_name=id)
-    user= request.user
+    product = Product.objects.all().filter(id=id)
+    for item in product:
+        time_id = item.product_bid_time
+    time_id = BiddingTime.objects.all().filter(id=time_id)
+    from datetime import datetime
+    now = datetime.now().time()
+    for item in time_id:
+        bid_end_time = item.bid_end_time
     
-    bid_amt_present = BiddingAmount.objects.all().filter(bidder_name=user.id,product_name=id)
-    if len(bid_amt_present)==0:
-        products = Product.objects.all().filter(id=id)
-        Context = {'product':products}
-        bidAmt = BiddingAmount.objects.all().filter(product_name=id)
-        if len(bidAmt) > 0:
-            bidAmtList = []
-            
-            for item in bidAmt:
-                bidAmtList.append(item.bid_amount)
-            # Calling Sorting Algo To Sort The Price
-            bubbleSort(bidAmtList)
-            Max_Amount = max(bidAmtList)
-            Context['Max_Amount'] = Max_Amount
-            print(Max_Amount)
-        
-        if request.method == "POST":
-            bid_amount = request.POST.get("bid_amount")
-            addintoDatabase = BiddingAmount(bidder_name=user.id,product_name=id,bid_amount=bid_amount)
-            addintoDatabase.save()
-            return redirect("OnBidProducts")
-        return render(request,'BidForm.html',Context) 
+    if now > bid_end_time:
+        return redirect("/")
     else:
-        product_amt = BiddingAmount.objects.get(product_name=id,bidder_name=user.id)
-        product_all_amt = BiddingAmount.objects.all().filter(product_name=id)
-        products_detail = Product.objects.all().filter(id=id)
-        Context = {'BidAmount':product_amt,'product':products_detail}
-        if len(product_all_amt) > 0:
-            bidAmtList = []
+        user= request.user
+        
+        bid_amt_present = BiddingAmount.objects.all().filter(bidder_name=user.id,product_name=id)
+        if len(bid_amt_present)==0:
+            products = Product.objects.all().filter(id=id)
+            Context = {'product':products}
+            bidAmt = BiddingAmount.objects.all().filter(product_name=id)
+            if len(bidAmt) > 0:
+                bidAmtList = []
+                
+                for item in bidAmt:
+                    bidAmtList.append(item.bid_amount)
+                # Calling Sorting Algo To Sort The Price
+                bubbleSort(bidAmtList)
+                Max_Amount = max(bidAmtList)
+                Context['Max_Amount'] = Max_Amount
+                print(Max_Amount)
             
-            for item in product_all_amt:
-                bidAmtList.append(item.bid_amount)
-            # Calling Sorting Algo To Sort The Price
-            bubbleSort(bidAmtList)
-            n = len(bidAmtList)
-            Max_Amount = bidAmtList[n-1]
-            Context['Max_Amount'] = Max_Amount
-            # print(Max_Amount)
-            
-        if request.method =="POST":
-            product_amt.bidder_name = user.id  
-            product_amt.product_name = id
-            product_amt.bid_amount = request.POST.get("bid_amount")
-            product_amt.save()
-            messages.success(request,"Bid Amount Updated Successfully")
-            return redirect("/")
-        Context['datetime'] = date_for_site
-        return render(request,"BidEdit.html",Context)
+            if request.method == "POST":
+                bid_amount = request.POST.get("bid_amount")
+                addintoDatabase = BiddingAmount(bidder_name=user.id,product_name=id,bid_amount=bid_amount)
+                addintoDatabase.save()
+                return redirect("OnBidProducts")
+            return render(request,'BidForm.html',Context) 
+        else:
+            product_amt = BiddingAmount.objects.get(product_name=id,bidder_name=user.id)
+            product_all_amt = BiddingAmount.objects.all().filter(product_name=id)
+            products_detail = Product.objects.all().filter(id=id)
+            Context = {'BidAmount':product_amt,'product':products_detail}
+            if len(product_all_amt) > 0:
+                bidAmtList = []
+                
+                for item in product_all_amt:
+                    bidAmtList.append(item.bid_amount)
+                # Calling Sorting Algo To Sort The Price
+                bubbleSort(bidAmtList)
+                n = len(bidAmtList)
+                Max_Amount = bidAmtList[n-1]
+                Context['Max_Amount'] = Max_Amount
+                # print(Max_Amount)
+                
+            if request.method =="POST":
+                product_amt.bidder_name = user.id  
+                product_amt.product_name = id
+                product_amt.bid_amount = request.POST.get("bid_amount")
+                product_amt.save()
+                messages.success(request,"Bid Amount Updated Successfully")
+                return redirect("/")
+            Context['datetime'] = date_for_site
+            return render(request,"BidEdit.html",Context)
 
 
 
@@ -444,11 +456,11 @@ def view_timeoutdated_products(request):
     current_time = now.strftime("%H:%M:%S")
     # print(current_time)
     # time1 = BiddingTime.objects.all()
-    print(time)
+    # print(time)
     # For all the time items having day less than today
     for item in time:
         timeId.append(item.id)
-        print(timeId)
+        # print(timeId)
     
     time2 = BiddingTime.objects.all().filter(bid_day=date_today)
     for item in time2:
@@ -459,7 +471,7 @@ def view_timeoutdated_products(request):
         # if bid_start_time < now.time() and item.bid_end_time > now.time():
         if item.bid_end_time < now.time():
             timeId.append(item.id)
-            print(timeId)
+            # print(timeId)
         # print(time_after_30_min)
     # print(datetime.now())
     # end_time = now + timedelta(minutes=30)
@@ -548,7 +560,7 @@ def view_products_going_to_bid(request):
     timeId = []
     for item in time:
         timeId.append(item.id)
-    print(timeId)
+    # print(timeId)
     
     product = Product.objects.all().filter(product_bid_time__in=timeId)
     category = Category.objects.all()
