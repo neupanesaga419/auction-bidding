@@ -50,7 +50,10 @@ def signup(request):
             to_list = [user.email]
             send_mail(subject,message,from_email,to_list,fail_silently=True)
             # End of Welcome Mail
-            
+            if send_mail(subject,message,from_email,to_list,fail_silently=True):
+                print("Yes Mail is sent")
+            else:
+                print("Not Working")
             # Start of Email Confirmation 
             current_site = get_current_site(request)
             email_subject = "Confirmation Email From Auction Bidding!!"
@@ -68,6 +71,7 @@ def signup(request):
             )
             email.fail_silently = True
             email.send()
+            
             return redirect('log_in')
         else:
             messages.warning(request,"Password Doesnot Match")
